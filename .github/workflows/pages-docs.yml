@@ -5,8 +5,8 @@ name: Deploy Docs
 #
 # NOTE: actions/configure-pages@v5 is intentionally NOT used — it fails with a
 # cryptic "TypeError: error must be an instance of Error" on this repository
-# (known bug that masks a Pages REST API issue). jekyll/builder produces the
-# same output without it.
+# (known bug that masks a Pages REST API issue). The docs are built with the
+# official Jekyll Pages container instead, then uploaded + deployed directly.
 
 on:
   push:
@@ -28,16 +28,17 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    container:
+      image: jekyll/jekyll:pages
+      options: --entrypoint=""
     steps:
       - uses: actions/checkout@v4
       - name: Build Jekyll site
-        uses: jekyll/builder@v1
-        with:
-          jekyll_src: docs
-          jekyll_cfg: _config.yml
-          jekyll_baseurl: /PaglaROUTER
         env:
-          JEKYLL_PAT: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          cd docs
+          jekyll build --config _config.yml --baseurl /PaglaROUTER
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
