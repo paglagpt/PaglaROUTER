@@ -1,5 +1,13 @@
 name: Deploy Docs
 
+# Builds the docs/ Jekyll site and publishes it to GitHub Pages at
+# https://paglagpt.github.io/PaglaROUTER/
+#
+# NOTE: actions/configure-pages@v5 is intentionally NOT used — it fails with a
+# cryptic "TypeError: error must be an instance of Error" on this repository
+# (known bug that masks a Pages REST API issue). jekyll/builder produces the
+# same output without it.
+
 on:
   push:
     branches: [main]
@@ -22,13 +30,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/configure-pages@v5
+      - name: Build Jekyll site
+        uses: jekyll/builder@v1
         with:
-          static_site_generator: jekyll
-      - uses: actions/jekyll-build-pages@v1
+          jekyll_src: docs
+          jekyll_cfg: _config.yml
+          jekyll_baseurl: /PaglaROUTER
+        env:
+          JEKYLL_PAT: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          source: ./docs
-      - uses: actions/upload-pages-artifact@v3
+          path: docs/_site
 
   deploy:
     environment:
