@@ -1,10 +1,9 @@
 name: Deploy Pages
 
+# Cloudflare Pages deployment starts once the Cloudflare project is live.
+# Until then, run manually after secrets are configured.
 on:
-  push:
-    branches: [main]
-    paths:
-      - "public/**"
+  workflow_dispatch:
 
 jobs:
   deploy:

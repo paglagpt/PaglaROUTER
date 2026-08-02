@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Added
+- GitHub Pages docs site (`docs/` Jekyll build, `pages-docs.yml`) live at
+  <https://paglagpt.github.io/PaglaROUTER/>.
+- `ci.yml` workflow (typecheck + tests + dry-run build) for PRs and main.
+- `CODE_OF_CONDUCT.md`, `.github/FUNDING.yml`, and Dependabot config for npm
+  and GitHub Actions.
+- Brand retheme to the official PaglaAI palette (`#6B7EFF` violet on
+  `#0A0A0B`), with the *Intelligence Unhinged* tagline in the banner.
+
+### Changed
+- Cloudflare `deploy-worker.yml` / `deploy-pages.yml` are now manual
+  (`workflow_dispatch`) until the `router.paglaai.space` domain and Cloudflare
+  project are live.
+- Brand assets moved to `docs/assets/` so the Jekyll docs site can serve them.
+
 ## [2.6.0] - 2026-08-02
 
 ### Added

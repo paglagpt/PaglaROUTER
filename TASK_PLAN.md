@@ -11,11 +11,11 @@ the LengtaMLX design system, without touching the production routing flow.
 
 | File | Change | Est. time | Est. tokens | Sub-agent | Success | Error | Handoff |
 | ---- | ------ | --------- | ----------- | --------- | ------- | ----- | ------- |
-| `assets/banner.svg` | LengtaMLX-style banner (navy/cyan, tagline, node motif) | 10m | 300 | — | Renders at width 1200 | Broken SVG → re-emit | README |
-| `assets/architecture.svg` | Pipeline diagram (clients → worker → scheduler → KV/providers) | 10m | 300 | — | Renders, matches ASCII block | Broken SVG → re-emit | README, docs |
+| `docs/assets/banner.svg` | PaglaAI-brand banner (`#6B7EFF` on `#0A0A0B`, tagline, node motif) | 10m | 300 | — | Renders at width 1200 | Broken SVG → re-emit | README |
+| `docs/assets/architecture.svg` | Pipeline diagram (clients → worker → scheduler → KV/providers) | 10m | 300 | — | Renders, matches ASCII block | Broken SVG → re-emit | README, docs |
 | `README.md` | Rewrite: banner, badges, manifesto quote, quickstart, grouped features, ASCII architecture; keep provider matrix/error taxonomy/deploy | 30m | 2.5k | — | All facts preserved, links resolve | Fact drift → diff against prior README | CHANGELOG |
-| `docs/*.md` | Markdown reference (quickstart, architecture, routing, errors, providers, development) | 45m | 4k | — | Every module referenced is real | Stale path → grep `src/` | CONTRIBUTING |
-| `.github/ISSUE_TEMPLATE/*.yml` + `PULL_REQUEST_TEMPLATE.md` | Bug/feature templates + PR checklist | 15m | 800 | — | Valid YAML, PR checks match CI | YAML error → validate | deploy-worker.yml |
+| `docs/*.md` + `docs/_config.yml` | GitHub Pages site (Jekyll/primer) — quickstart, architecture, routing, errors, providers, development | 45m | 4k | — | Pages deploy green; every module referenced is real | Stale path → grep `src/` | CONTRIBUTING |
+| `.github/ISSUE_TEMPLATE/*.yml` + `PULL_REQUEST_TEMPLATE.md` | Bug/feature templates + PR checklist | 15m | 800 | — | Valid YAML, PR checks match CI | YAML error → validate | ci.yml |
 
 ## Workstream B — Tests, tooling & packaging
 
@@ -34,12 +34,15 @@ the LengtaMLX design system, without touching the production routing flow.
 
 - `src/index.ts`, `src/adapters/*`, `src/types.ts`, `public/*`, `wrangler.toml`
   are **not** modified except the `dailyWindowStart` correctness fix above.
-- Docusaurus docs site is deferred: wiring `@cloudflare/pages-plugin-docusaurus`
-  would add heavy deps to CI `npm ci` and risk the Pages/Worker deploy. The
-  `docs/` markdown reference ships now; layer Docusaurus on top later.
+- Cloudflare deployment (Worker + Pages portal) is deferred until the
+  `router.paglaai.space` domain is live; both workflows are on
+  `workflow_dispatch` until then.
+- Docs are served on **GitHub Pages** (Jekyll from `docs/`). A heavier
+  Docusaurus site is not needed and would add build deps.
 
 ## Verification
 
 - `npm test` — 6 files, 59 tests passing
 - `npm run typecheck` — clean under `strict`
 - `npm run build` — dry-run deploy OK (98.59 KiB / gzip 24.39 KiB)
+- `pages-docs.yml` — Jekyll build + deploy to GitHub Pages

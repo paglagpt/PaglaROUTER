@@ -2,7 +2,9 @@
 
 # PaglaROUTER
 
-[![banner](assets/banner.svg)](README.md)
+[![banner](docs/assets/banner.svg)](README.md)
+
+# *Intelligence Unhinged*
 
 **One endpoint. Every provider. Zero waste.**
 
@@ -11,8 +13,11 @@
 
 — *PaglaAI Router Team*
 
-[![License: MIT](https://img.shields.io/badge/license-MIT-22d3ee.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-2.6.0-60a5fa.svg)](CHANGELOG.md)
+[![License: MIT](https://img.shields.io/badge/license-MIT-6B7EFF.svg)](LICENSE)
+[![Version](https://img.shields.io/badge/version-2.6.0-8F9BFF.svg)](CHANGELOG.md)
+[![Docs](https://img.shields.io/badge/docs-GitHub%20Pages-6B7EFF.svg)](https://paglagpt.github.io/PaglaROUTER/)
+[![CI](https://github.com/paglagpt/PaglaROUTER/actions/workflows/ci.yml/badge.svg)](https://github.com/paglagpt/PaglaROUTER/actions/workflows/ci.yml)
+[![Tests](https://img.shields.io/badge/tests-59%20passed-0A0A0B.svg)](Tests/)
 [![Cloudflare Workers](https://img.shields.io/badge/Cloudflare-Workers-f6821f.svg)](https://workers.cloudflare.com)
 [![Status](https://img.shields.io/badge/status-production-10b981.svg)](https://router.paglaai.space)
 
@@ -100,7 +105,7 @@ CLIENTS ────────────────────────
    router.paglaai.space/v1                                           GitHub · …
 ```
 
-![architecture](assets/architecture.svg)
+![architecture](docs/assets/architecture.svg)
 
 ## Selection Weight
 
@@ -216,16 +221,22 @@ POST https://router.paglaai.space/v1/messages
 
 ## Documentation
 
+- Live docs site — [paglagpt.github.io/PaglaROUTER](https://paglagpt.github.io/PaglaROUTER/)
+  (Jekyll build from [`docs/`](docs/))
 - Project planning & execution — [TASK_PLAN.md](TASK_PLAN.md)
-- Docusaurus docs site — see the [`docs/`](docs/) directory
-- Getting involved — [CONTRIBUTING.md](CONTRIBUTING.md)
+- Getting involved — [CONTRIBUTING.md](CONTRIBUTING.md) · [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
 - Security policy — [SECURITY.md](SECURITY.md)
 - Release history — [CHANGELOG.md](CHANGELOG.md)
+
+## Community & support
+
+- Contact — [paglaai@aynnaghor.space](mailto:paglaai@aynnaghor.space)
+- Organization — [github.com/paglagpt](https://github.com/paglagpt)
 
 ## License
 
 Distributed under the **MIT License**. See [LICENSE](LICENSE) for more
-information. © 2026 PaglaAI.
+information. © 2026 PaglaAI · *Intelligence Unhinged*.
 
 ---
 

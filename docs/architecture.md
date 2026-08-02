@@ -1,6 +1,11 @@
+---
+layout: default
+title: Architecture
+---
+
 # Architecture
 
-![architecture](../assets/architecture.svg)
+![architecture](assets/architecture.svg)
 
 PaglaROUTER is a **stateless Cloudflare Worker** behind one base URL
 (`router.paglaai.space/v1`) that speaks both OpenAI and Anthropic protocols.

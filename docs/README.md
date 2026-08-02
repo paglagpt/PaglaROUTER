@@ -1,8 +1,14 @@
+---
+layout: default
+title: PaglaROUTER
+permalink: /
+---
+
 # PaglaROUTER Docs
 
 <div align="center">
 
-![banner](../assets/banner.svg)
+![banner](assets/banner.svg)
 
 **One endpoint. Every provider. Zero waste.**
 
@@ -20,8 +26,8 @@
 | [Development](development.md) | Tests, typecheck, build, and deploy |
 
 The full surface (selection weight, error taxonomy, provider matrix) also lives
-in the root [README](../README.md). Source-of-truth modules are under
-[`src/`](../src).
+in the root [README](https://github.com/paglagpt/PaglaROUTER#readme). Source-of-truth
+modules are under [`src/`](https://github.com/paglagpt/PaglaROUTER/tree/main/src).
 
 ## Feature map
 

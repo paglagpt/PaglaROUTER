@@ -1,3 +1,8 @@
+---
+layout: default
+title: Error taxonomy
+---
+
 # Error taxonomy
 
 `src/telemetry/error-classify.ts` classifies upstream failures into a small

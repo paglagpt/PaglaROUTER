@@ -1,3 +1,8 @@
+---
+layout: default
+title: Quickstart
+---
+
 # Quickstart
 
 PaglaROUTER is a Cloudflare Worker. Run it locally with Wrangler's KV

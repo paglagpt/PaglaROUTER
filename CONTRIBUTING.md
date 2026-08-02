@@ -35,8 +35,7 @@ The project requires Node 20+ (Node 22 recommended) and npm.
 | `src/telemetry/` | Token estimation, rate-limit parsing, error classification |
 | `Tests/` | Vitest unit suite (pure modules only) |
 | `public/` | Explorer portal (Cloudflare Pages) |
-| `docs/` | Markdown docs reference |
-| `assets/` | Banner & architecture SVGs |
+| `docs/` | GitHub Pages site source (Jekyll; `assets/` holds the SVGs) |
 
 `src/telemetry/error-classify.ts` is intentionally kept in sync with the
 PaglaAI onboarding wizard's key validation — change both when the taxonomy

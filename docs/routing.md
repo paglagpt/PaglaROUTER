@@ -1,3 +1,8 @@
+---
+layout: default
+title: Routing & weighting
+---
+
 # Routing & weighting
 
 ## Selection weight

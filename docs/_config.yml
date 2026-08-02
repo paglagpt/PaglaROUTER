@@ -1,0 +1,21 @@
+title: PaglaROUTER
+description: >-
+  Unified LLM gateway for the PaglaAI ecosystem — one OpenAI + Anthropic
+  endpoint, weighted multi-provider routing. Intelligence Unhinged.
+url: "https://paglagpt.github.io"
+baseurl: "/PaglaROUTER"
+
+remote_theme: pages-themes/primer@v0.6.0
+plugins:
+  - jekyll-remote-theme
+  - jekyll-relative-links
+
+relative_links:
+  enabled: true
+  collections: false
+
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: default
