@@ -1,10 +1,106 @@
+<div align="center">
+
 # PaglaROUTER
 
-Unified LLM gateway router for the PaglaAI multi-agent ecosystem. A stateless
-Cloudflare Worker that presents a single OpenAI (`/v1/chat/completions`) and
-Anthropic Claude (`/v1/messages`) interface while dynamically aggregating
-multi-account credentials, executing sliding-window rate limiting, and routing
-each request across a weighted multi-tier cascade.
+[![banner](assets/banner.svg)](README.md)
+
+**One endpoint. Every provider. Zero waste.**
+
+> “We believe intelligence should flow freely between providers — not be locked
+> into one vendor's quota.”
+
+— *PaglaAI Router Team*
+
+[![License: MIT](https://img.shields.io/badge/license-MIT-22d3ee.svg)](LICENSE)
+[![Version](https://img.shields.io/badge/version-2.6.0-60a5fa.svg)](CHANGELOG.md)
+[![Cloudflare Workers](https://img.shields.io/badge/Cloudflare-Workers-f6821f.svg)](https://workers.cloudflare.com)
+[![Status](https://img.shields.io/badge/status-production-10b981.svg)](https://router.paglaai.space)
+
+</div>
+
+## What is PaglaROUTER?
+
+PaglaROUTER is a **stateless Cloudflare Worker** that turns every AI account
+you own into a single, always-available endpoint. It presents one OpenAI
+(`/v1/chat/completions`) and Anthropic Claude (`/v1/messages`) interface while
+dynamically aggregating multi-account credentials, enforcing sliding-window
+rate limits, and routing each request across a weighted multi-tier cascade.
+
+If one provider is down, rate-limited, or out of quota, the router silently
+fails over to the next best account — your agents never notice.
+
+## Quickstart
+
+```bash
+npm install
+cp .dev.vars.example .dev.vars     # fill in provider keys
+npm run typecheck
+npm run dev                        # wrangler dev, local KV emulation
+
+npx wrangler deploy --env production   # ship to the edge
+```
+
+```bash
+curl https://router.paglaai.space/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -d '{ "model": "gemini-2.5-flash",
+        "messages": [{ "role": "user", "content": "hi" }] }'
+```
+
+## Features
+
+### Routing & failover
+- **Weighted cascade selection** — each account is scored per request and the
+  best candidate wins; failures cascade to the next.
+- **Health + circuit breakers** — permanent lockout on bad keys, exponential
+  backoff after repeated 5xx, quarantine on `429`.
+- **Concurrency-aware** — in-flight request count cools hot accounts.
+
+### Multi-account aggregation
+- **Comma-separate keys** (`GEMINI_API_KEY=key1,key2`) to pool quotas into
+  weighted accounts per provider.
+- **Alias-tolerant** — `*_API_KEYS` (claude-code-proxy / uni-api convention)
+  falls back read-only when the canonical `*_API_KEY` is unset.
+- **8 providers out of the box** — Gemini, Groq, Qwen, Kimi, GitHub Models,
+  Cerebras, Mistral, OpenRouter.
+
+### Rate-limit bookkeeping
+- **Sliding-window token buckets** backed by KV (`quota:<accountId>`), with a
+  per-isolate cache; swap for Redis if you need cross-isolate consistency.
+- **Live reconciliation** — `x-ratelimit-*` response headers re-sync the local
+  counters with the true upstream allowance.
+- **Edge token estimation** — a BPE approximation that tracks CJK/word density
+  for quota accounting without a cold-start model load.
+
+### Interop & observability
+- **Dual protocol** — OpenAI and Anthropic request/response shapes on one base
+  URL (`router.paglaai.space/v1`).
+- **Shared error taxonomy** — `classifyProviderError` mirrors the PaglaAI
+  onboarding wizard (`paglaai_onboard.py`), keeping both in sync.
+
+## Architecture
+
+```
+CLIENTS ─────────────────────────── WORKER (Hono)
+  OpenAI SDK ──┐                     ┌──────── src/index.ts ──────────┐
+  Anthropic SDK ─┤  POST /v1 ────────►│ src/config.ts · src/types.ts    │
+                │                     │ src/adapters/ (gemini, groq,    │
+                │                     │   qwen, kimi, openai-generic)   │
+                │                     └───────────────┬─────────────────┘
+                │                     SCHEDULER        ▼  dispatch + telemetry
+                │                     ┌────────────────────────────────┐
+                │                     │ computeWeight · evaluateAccount │
+                │                     │ sliding-window · circuit breaks │
+                │                     └───────┬──────────────┬──────────┘
+                │                       read/write      route to best
+                │                             ▼              ▼
+                │                     KV PAGLA_TELEMETRY_KV     PROVIDERS
+                │                     quota:<id> · state:<id>    Gemini · Groq ·
+                ▼                                                   Qwen · Kimi ·
+   router.paglaai.space/v1                                           GitHub · …
+```
+
+![architecture](assets/architecture.svg)
 
 ## Selection Weight
 
@@ -67,51 +163,20 @@ Jun 19 2026 (all Standard keys ~Sept 2026). The router classifies these as
 `unsupported_key_type` (see `src/telemetry/error-classify.ts`, mirrored in the
 wizard) and locks the account out rather than retrying it.
 
-## Directory
+## Development
 
-```
-paglarouter/
-├── .github/workflows/       # deploy-worker.yml, deploy-pages.yml
-├── public/                  # Explorer portal (Cloudflare Pages)
-├── src/
-│   ├── index.ts             # Worker entrypoint & Hono router
-│   ├── config.ts            # Provider quota & credential schema
-│   ├── scheduler/
-│   │   ├── weight.ts        # W(Ai, M) engine
-│   │   └── sliding-window.ts# KV token bucket + health/circuit state
-│   ├── adapters/
-│   │   ├── gemini.ts        # Native Google REST translation
-│   │   ├── groq.ts          # OpenAI-compat passthrough
-│   │   ├── qwen.ts          # DashScope (+ enable_thinking)
-│   │   ├── kimi.ts          # Moonshot (+ thinking mode)
-│   │   └── openai-generic.ts# GitHub/Cerebras/Mistral/OpenRouter
-│   └── telemetry/
-│       ├── bpe.ts           # Edge token estimation
-│       ├── header-parser.ts # x-ratelimit-* reconciliation
-│       └── error-classify.ts# Shared error taxonomy (mirrors the wizard)
-├── .dev.vars.example        # Local secret template (copy to .dev.vars)
-├── CHANGELOG.md
-├── CONTRIBUTING.md
-├── LICENSE                  # MIT
-├── SECURITY.md
-├── wrangler.toml
-└── package.json
-```
-
-## Local development
+### Tests
 
 ```bash
-npm install
-cp .dev.vars.example .dev.vars   # fill in keys (Windows: copy .dev.vars.example .dev.vars)
-npm run typecheck
-npm run dev              # wrangler dev (local KV emulation)
+npm test                 # vitest suite under Tests/
 ```
 
-> `wrangler.toml` references KV id `a1b2c3d4e5f6_pagla_kv`. Create the real
-> namespace and paste its id:
-> `npx wrangler kv namespace create PAGLA_TELEMETRY_KV`
+```bash
+npm run typecheck        # strict TS
+npm run build            # wrangler deploy --dry-run --outdir dist
+```
 
-## Deploy
+### Deploy
 
 ```bash
 npx wrangler deploy --env production
@@ -125,6 +190,10 @@ npx wrangler secret put GROQ_API_KEY --env production
 # ... QWEN_API_KEY, KIMI_API_KEY, GITHUB_TOKEN, CEREBRAS_API_KEY, MISTRAL_API_KEY, OPENROUTER_API_KEY
 npx wrangler secret put ROUTER_ADMIN_TOKEN --env production   # optional auth
 ```
+
+> `wrangler.toml` references KV id `a1b2c3d4e5f6_pagla_kv`. Create the real
+> namespace and paste its id:
+> `npx wrangler kv namespace create PAGLA_TELEMETRY_KV`
 
 Once `paglaai.space` NameServers propagate, `https://router.paglaai.space/v1`
 activates automatically via the custom-domain route.
@@ -144,3 +213,24 @@ Anthropic-compatible:
 POST https://router.paglaai.space/v1/messages
 { "model": "gemini-2.5-flash", "max_tokens": 256, "messages": [{ "role": "user", "content": "hi" }] }
 ```
+
+## Documentation
+
+- Project planning & execution — [TASK_PLAN.md](TASK_PLAN.md)
+- Docusaurus docs site — see the [`docs/`](docs/) directory
+- Getting involved — [CONTRIBUTING.md](CONTRIBUTING.md)
+- Security policy — [SECURITY.md](SECURITY.md)
+- Release history — [CHANGELOG.md](CHANGELOG.md)
+
+## License
+
+Distributed under the **MIT License**. See [LICENSE](LICENSE) for more
+information. © 2026 PaglaAI.
+
+---
+
+<div align="center">
+
+PaglaROUTER · built for the [PaglaAI](https://github.com/paglagpt) ecosystem
+
+</div>

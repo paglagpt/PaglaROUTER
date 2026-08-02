@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [2.6.0] - 2026-08-02
+
+### Added
+- Vitest unit suite under `Tests/` (weight engine, token estimation, rate-limit
+  parsing, error classification, sliding-window state, route resolution) with a
+  `npm test` script and an in-memory KV mock.
+- `assets/banner.svg` and `assets/architecture.svg` in the LengtaMLX design
+  language; README rewritten with banner, badges, manifesto quote, quickstart,
+  grouped features, and ASCII architecture.
+- Markdown docs reference under `docs/` (quickstart, architecture, routing,
+  error taxonomy, providers, development).
+- `.github/ISSUE_TEMPLATE/bug-report.yml`, `feature-request.yml`, and
+  `PULL_REQUEST_TEMPLATE.md`.
+- `TASK_PLAN.md` and `.vscode/` editor settings.
+- CI now runs `npm test` before deploying the Worker.
+
+### Fixed
+- `dailyWindowStart` computed `pacific-midnight`/`cst-midnight` reset
+  boundaries via a locale-string round-trip that depended on the host machine's
+  timezone. Boundaries are now derived TZ-independently via `Intl` (DST-aware
+  for Pacific), so quota windows reset at the correct instant on any host.
+
 ## [2.5.0] - 2026-08-02
 
 ### Added

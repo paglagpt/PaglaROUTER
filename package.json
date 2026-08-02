@@ -1,12 +1,13 @@
 {
   "name": "paglarouter",
-  "version": "2.5.0",
+  "version": "2.6.0",
   "private": true,
   "type": "module",
   "description": "Unified LLM gateway router for the PaglaAI multi-agent ecosystem",
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy --env production",
+    "test": "vitest run",
     "typecheck": "tsc --noEmit",
     "build": "wrangler deploy --dry-run --outdir dist"
   },
@@ -16,6 +17,7 @@
   "devDependencies": {
     "@cloudflare/workers-types": "^5",
     "typescript": "^5",
+    "vitest": "^3",
     "wrangler": "^4"
   }
 }

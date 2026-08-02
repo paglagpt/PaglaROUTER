@@ -10,6 +10,7 @@ git clone <your-fork-url> paglarouter
 cd paglarouter
 npm ci
 npm run typecheck
+npm test
 npm run dev        # wrangler dev — local KV emulation
 ```
 
@@ -18,7 +19,8 @@ The project requires Node 20+ (Node 22 recommended) and npm.
 ## Development workflow
 
 - Create a branch: `git checkout -b feat/your-feature`
-- Run `npm run typecheck` before pushing — the CI deploy workflow does the same.
+- Run `npm run typecheck` and `npm test` before pushing — the CI deploy
+  workflow does the same.
 - Keep commits focused; write messages in the imperative mood.
 - Rebase onto `main` before opening a PR.
 
@@ -31,11 +33,17 @@ The project requires Node 20+ (Node 22 recommended) and npm.
 | `src/scheduler/` | Weight engine + KV sliding-window state |
 | `src/adapters/` | Per-provider REST translation |
 | `src/telemetry/` | Token estimation, rate-limit parsing, error classification |
+| `Tests/` | Vitest unit suite (pure modules only) |
 | `public/` | Explorer portal (Cloudflare Pages) |
+| `docs/` | Markdown docs reference |
+| `assets/` | Banner & architecture SVGs |
 
 `src/telemetry/error-classify.ts` is intentionally kept in sync with the
 PaglaAI onboarding wizard's key validation — change both when the taxonomy
 changes.
+
+When adding tests, mirror the pattern in `Tests/*.test.ts` — pure module unit
+tests using the in-memory KV mock in `Tests/helpers.ts`.
 
 ## Secrets & credentials
 

@@ -1,0 +1,7 @@
+{
+  "recommendations": [
+    "dbaeumer.vscode-typescript-next",
+    "cloudflare.cloudflare-workers",
+    "editorconfig.editorconfig"
+  ]
+}

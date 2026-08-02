@@ -1,0 +1,53 @@
+name: Feature request
+description: Suggest a capability for PaglaROUTER
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Ideas are welcome — routing heuristics, new providers, observability,
+        or docs. Describe the problem you are solving, not just the solution.
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - New provider / model
+        - Routing / weighting
+        - Quota & rate-limit handling
+        - Adapters / protocol
+        - Portal / dashboard
+        - Documentation
+        - Tooling / CI
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem statement
+      description: What pain point are you solving?
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: How should PaglaROUTER behave?
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Anything else you tried or considered.
+
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: Contribution
+      options:
+        - label: I'm willing to implement this (see CONTRIBUTING.md)

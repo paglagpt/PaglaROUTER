@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="470" viewBox="0 0 900 470" role="img" aria-label="PaglaROUTER architecture">
+  <defs>
+    <linearGradient id="abg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0a0e1a"/>
+      <stop offset="1" stop-color="#101828"/>
+    </linearGradient>
+    <linearGradient id="accent2" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#22d3ee"/>
+      <stop offset="1" stop-color="#60a5fa"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="900" height="470" fill="url(#abg)"/>
+
+  <!-- Clients -->
+  <g>
+    <text x="20" y="28" font-family="ui-monospace, monospace" font-size="13" fill="#7c8bab">CLIENTS</text>
+    <rect x="20" y="40" width="170" height="58" rx="8" fill="#101828" stroke="#10b981" stroke-width="1.5"/>
+    <text x="105" y="68" font-family="ui-monospace, monospace" font-size="13" fill="#d7e3f8" text-anchor="middle">OpenAI SDK</text>
+    <text x="105" y="86" font-family="ui-monospace, monospace" font-size="11" fill="#5d6b8a" text-anchor="middle">POST /v1/chat/completions</text>
+    <rect x="20" y="110" width="170" height="58" rx="8" fill="#101828" stroke="#10b981" stroke-width="1.5"/>
+    <text x="105" y="138" font-family="ui-monospace, monospace" font-size="13" fill="#d7e3f8" text-anchor="middle">Anthropic SDK</text>
+    <text x="105" y="156" font-family="ui-monospace, monospace" font-size="11" fill="#5d6b8a" text-anchor="middle">POST /v1/messages</text>
+  </g>
+
+  <!-- Worker -->
+  <rect x="280" y="40" width="340" height="120" rx="10" fill="#101828" stroke="url(#accent2)" stroke-width="1.5"/>
+  <text x="450" y="66" font-family="ui-monospace, monospace" font-size="13" fill="#22d3ee" text-anchor="middle">CLOUDFLARE WORKER (Hono)</text>
+  <text x="450" y="92" font-family="ui-monospace, monospace" font-size="11" fill="#7c8bab" text-anchor="middle">src/index.ts</text>
+  <text x="450" y="112" font-family="ui-monospace, monospace" font-size="11" fill="#7c8bab" text-anchor="middle">src/config.ts  ·  src/types.ts</text>
+  <text x="450" y="132" font-family="ui-monospace, monospace" font-size="11" fill="#7c8bab" text-anchor="middle">src/adapters/ (gemini, groq, qwen, kimi, …)</text>
+
+  <!-- Scheduler -->
+  <rect x="280" y="210" width="340" height="92" rx="10" fill="#101828" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="450" y="236" font-family="ui-monospace, monospace" font-size="13" fill="#f59e0b" text-anchor="middle">SCHEDULER / WEIGHT ENGINE</text>
+  <text x="450" y="258" font-family="ui-monospace, monospace" font-size="11" fill="#7c8bab" text-anchor="middle">computeWeight · evaluateAccount</text>
+  <text x="450" y="278" font-family="ui-monospace, monospace" font-size="11" fill="#7c8bab" text-anchor="middle">sliding-window buckets · circuit breakers</text>
+
+  <!-- Telemetry -->
+  <rect x="280" y="352" width="340" height="92" rx="10" fill="#101828" stroke="#a78bfa" stroke-width="1.5"/>
+  <text x="450" y="378" font-family="ui-monospace, monospace" font-size="13" fill="#a78bfa" text-anchor="middle">TELEMETRY</text>
+  <text x="450" y="400" font-family="ui-monospace, monospace" font-size="11" fill="#7c8bab" text-anchor="middle">estimatePromptTokens (BPE) · parseRateLimit</text>
+  <text x="450" y="420" font-family="ui-monospace, monospace" font-size="11" fill="#7c8bab" text-anchor="middle">classifyProviderError · usage reconciliation</text>
+
+  <!-- KV -->
+  <rect x="700" y="210" width="180" height="92" rx="10" fill="#101828" stroke="#10b981" stroke-width="1.5"/>
+  <text x="790" y="240" font-family="ui-monospace, monospace" font-size="13" fill="#10b981" text-anchor="middle">KV PAGLA_TELEMETRY_KV</text>
+  <text x="790" y="262" font-family="ui-monospace, monospace" font-size="11" fill="#5d6b8a" text-anchor="middle">quota:&lt;accountId&gt;</text>
+  <text x="790" y="280" font-family="ui-monospace, monospace" font-size="11" fill="#5d6b8a" text-anchor="middle">state:&lt;accountId&gt;</text>
+
+  <!-- Providers -->
+  <text x="20" y="330" font-family="ui-monospace, monospace" font-size="13" fill="#7c8bab">PROVIDERS</text>
+  <g>
+    <rect x="20" y="352" width="110" height="46" rx="8" fill="#101828" stroke="#22d3ee" stroke-width="1.5"/>
+    <text x="75" y="380" font-family="ui-monospace, monospace" font-size="12" fill="#d7e3f8" text-anchor="middle">Gemini</text>
+    <rect x="142" y="352" width="110" height="46" rx="8" fill="#101828" stroke="#22d3ee" stroke-width="1.5"/>
+    <text x="197" y="380" font-family="ui-monospace, monospace" font-size="12" fill="#d7e3f8" text-anchor="middle">Groq</text>
+  </g>
+  <g>
+    <rect x="20" y="408" width="110" height="46" rx="8" fill="#101828" stroke="#22d3ee" stroke-width="1.5"/>
+    <text x="75" y="436" font-family="ui-monospace, monospace" font-size="12" fill="#d7e3f8" text-anchor="middle">Qwen</text>
+    <rect x="142" y="408" width="110" height="46" rx="8" fill="#101828" stroke="#22d3ee" stroke-width="1.5"/>
+    <text x="197" y="436" font-family="ui-monospace, monospace" font-size="12" fill="#d7e3f8" text-anchor="middle">Kimi</text>
+    <rect x="20" y="270" width="0" height="0" fill="none"/>
+  </g>
+
+  <!-- Edges -->
+  <g stroke="#2a3a5f" stroke-width="2" fill="none">
+    <path d="M190 69 C 235 69, 235 90, 280 90"/>
+    <path d="M190 139 C 235 139, 235 110, 280 110"/>
+    <path d="M450 160 L 450 210"/>
+    <path d="M450 302 L 450 352"/>
+    <path d="M450 190 C 560 190, 560 252, 700 252"/>
+    <path d="M620 260 C 660 260, 660 256, 700 256"/>
+    <path d="M280 300 C 200 300, 200 375, 130 375"/>
+    <path d="M280 400 C 210 400, 200 408, 152 408"/>
+  </g>
+  <g font-family="ui-monospace, monospace" font-size="10" fill="#5d6b8a">
+    <text x="228" y="60">POST /v1</text>
+    <text x="520" y="332">weight select</text>
+    <text x="470" y="182">dispatch</text>
+    <text x="620" y="330">read/write</text>
+    <text x="360" y="318">route to best account</text>
+    <text x="196" y="400">upstream</text>
+  </g>
+</svg>

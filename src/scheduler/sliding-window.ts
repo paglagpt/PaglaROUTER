@@ -30,6 +30,39 @@ const memCache = new Map<string, Bucket>();
 
 const MINUTE_MS = 60_000;
 
+/**
+ * Midnight (00:00) of `now`'s calendar day inside `timeZone`, expressed as an
+ * absolute epoch. The zoned wall-clock time is read with Intl (never parsed
+ * back through `new Date`, which would depend on the host machine's TZ).
+ */
+function zonedMidnight(timeZone: string, now: number): number {
+  const fmt = new Intl.DateTimeFormat("en-US", {
+    timeZone,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hourCycle: "h23",
+  });
+  const parts = Object.fromEntries(fmt.formatToParts(now).map((p) => [p.type, p.value])) as Record<
+    string,
+    string
+  >;
+  const wallAsUtc = Date.UTC(
+    Number(parts.year),
+    Number(parts.month) - 1,
+    Number(parts.day),
+    Number(parts.hour),
+    Number(parts.minute),
+    Number(parts.second),
+  );
+  const offsetMs = wallAsUtc - now;
+  const dateAsUtc = Date.UTC(Number(parts.year), Number(parts.month) - 1, Number(parts.day));
+  return dateAsUtc - offsetMs;
+}
+
 /** Wall-clock epoch (ms) at which a provider's daily window resets. */
 export function dailyWindowStart(quota: Quota, now = Date.now()): number {
   switch (quota.reset) {
@@ -39,25 +72,10 @@ export function dailyWindowStart(quota: Quota, now = Date.now()): number {
       const d = new Date(now);
       return Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate());
     }
-    case "pacific-midnight": {
-      const d = new Date(now);
-      const pacific = new Date(d.toLocaleString("en-US", { timeZone: "America/Los_Angeles" }));
-      const utc = Date.UTC(
-        pacific.getUTCFullYear(),
-        pacific.getUTCMonth(),
-        pacific.getUTCDate(),
-      );
-      return utc - 7 * 60 * 60 * 1000;
-    }
-    case "cst-midnight": {
-      const d = new Date(now);
-      const china = new Date(d.toLocaleString("en-US", { timeZone: "Asia/Shanghai" }));
-      return Date.UTC(
-        china.getUTCFullYear(),
-        china.getUTCMonth(),
-        china.getUTCDate(),
-      ) - 8 * 60 * 60 * 1000;
-    }
+    case "pacific-midnight":
+      return zonedMidnight("America/Los_Angeles", now);
+    case "cst-midnight":
+      return zonedMidnight("Asia/Shanghai", now);
   }
 }
 

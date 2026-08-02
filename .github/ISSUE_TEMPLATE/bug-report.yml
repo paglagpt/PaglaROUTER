@@ -1,0 +1,66 @@
+name: Bug report
+description: Report a problem with PaglaROUTER routing, quotas, or the portal
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to file a bug. Please redact any API keys
+        before pasting request bodies or logs.
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Routing / failover
+        - Rate-limit bookkeeping
+        - Error classification
+        - Adapter (provider translation)
+        - Portal / dashboard
+        - Docs / build tooling
+    validations:
+      required: true
+
+  - type: input
+    id: model
+    attributes:
+      label: Model requested
+      description: e.g. `gemini-2.5-flash`
+
+  - type: input
+    id: provider
+    attributes:
+      label: Provider / upstream
+      description: e.g. `gemini`, `groq`, `openrouter`
+
+  - type: input
+    id: status
+    attributes:
+      label: Upstream status code
+      description: e.g. `429`, `400`, `500`
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Send ...
+        2. Observe ...
+        3. Expected ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs / request body (redacted)
+      render: text
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Confirmation
+      options:
+        - label: I redacted all API keys and tokens
+          required: true

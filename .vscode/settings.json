@@ -1,0 +1,12 @@
+{
+  "files.exclude": {
+    "node_modules": true,
+    "dist": true,
+    ".wrangler": true
+  },
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.tabSize": 2,
+  "files.eol": "\n"
+}
