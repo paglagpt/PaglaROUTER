@@ -8,8 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ## [Unreleased]
 
 ### Added
-- GitHub Pages docs site (`docs/` Jekyll build, `pages-docs.yml`) live at
-  <https://paglagpt.github.io/PaglaROUTER/>.
+- GitHub Pages docs site (`docs/` Jekyll build) live at
+  <https://paglagpt.github.io/PaglaROUTER/>. Built natively from branch `main`
+  at path `/docs` (GitHub's own Pages builder), not a custom workflow.
 - `ci.yml` workflow (typecheck + tests + dry-run build) for PRs and main.
 - `CODE_OF_CONDUCT.md`, `.github/FUNDING.yml`, and Dependabot config for npm
   and GitHub Actions.
