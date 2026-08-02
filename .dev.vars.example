@@ -1,0 +1,31 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# PaglaROUTER local development environment (copied to `.dev.vars`).
+# Real values are NEVER committed. `wrangler dev` loads this file locally;
+# production uses `npx wrangler secret put <NAME> --env production`.
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Each secret may hold multiple accounts separated by commas:
+#   GEMINI_API_KEY=key1,key2  → two weighted Google accounts.
+
+GEMINI_API_KEY=
+# GROQ_API_KEY=
+# QWEN_API_KEY=
+# KIMI_API_KEY=
+# GITHUB_TOKEN=
+# CEREBRAS_API_KEY=
+# MISTRAL_API_KEY=
+# OPENROUTER_API_KEY=
+
+# Ecosystem aliases (claude-code-proxy / uni-api convention). Read-only:
+# they are only used when the canonical `*_API_KEY` above is unset.
+# GEMINI_API_KEYS=
+# GROQ_API_KEYS=
+# QWEN_API_KEYS=
+# KIMI_API_KEYS=
+# CEREBRAS_API_KEYS=
+# MISTRAL_API_KEYS=
+# OPENROUTER_API_KEYS=
+
+# Optional auth gate for /v1/* endpoints. Set in production to prevent the
+# router from being used as an open proxy.
+# ROUTER_ADMIN_TOKEN=

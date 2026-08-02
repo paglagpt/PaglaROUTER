@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PaglaROUTER · Unified Explorer Portal</title>
+  <style>
+    :root {
+      --bg: #0a0e1a;
+      --card: #101828;
+      --border: #1f2b45;
+      --accent: #22d3ee;
+      --amber: #f59e0b;
+      --emerald: #10b981;
+      --text: #d7e0f0;
+      --subtle: #7c8bab;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      min-height: 100vh;
+      padding: 32px 20px;
+    }
+    .wrap { max-width: 1080px; margin: 0 auto; }
+    h1 { font-size: 28px; font-weight: 800; letter-spacing: -0.5px; }
+    h1 span { color: var(--accent); }
+    .sub { color: var(--subtle); margin: 6px 0 28px; font-size: 13px; }
+    .badge {
+      display: inline-block; padding: 2px 10px; border-radius: 999px;
+      font-size: 11px; font-weight: 700; margin-left: 10px; vertical-align: middle;
+    }
+    .badge.ok { background: rgba(16,185,129,.15); color: var(--emerald); border: 1px solid rgba(16,185,129,.35); }
+    .badge.down { background: rgba(239,68,68,.15); color: #f87171; border: 1px solid rgba(239,68,68,.35); }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; }
+    .card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 14px; padding: 16px;
+    }
+    .card h3 { font-size: 14px; color: #fff; margin-bottom: 10px; display: flex; justify-content: space-between; }
+    .meter { height: 8px; background: #1b2740; border-radius: 999px; overflow: hidden; margin: 6px 0 12px; }
+    .meter > div { height: 100%; border-radius: 999px; background: var(--accent); transition: width .4s ease; }
+    .row { display: flex; justify-content: space-between; font-size: 12px; color: var(--subtle); margin: 4px 0; }
+    .row b { color: var(--text); }
+    .status { font-size: 12px; margin-bottom: 8px; }
+    .live { color: var(--emerald); }
+    .dead { color: #f87171; }
+    .mono { font-size: 12px; color: var(--subtle); line-height: 1.7; }
+    .mono code { color: var(--amber); }
+    .section { margin-top: 28px; }
+    .section h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .12em; color: var(--accent); margin-bottom: 12px; }
+    footer { margin-top: 40px; color: var(--subtle); font-size: 11px; text-align: center; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Pagla<span>ROUTER</span>
+      <span id="gw-status" class="badge down">OFFLINE</span>
+    </h1>
+    <p class="sub">Unified LLM Gateway · Weight-selected multi-provider routing · dual-interface (OpenAI + Anthropic)</p>
+
+    <section class="section">
+      <h2>Provider Health &amp; Quota Telemetry</h2>
+      <div class="grid" id="providers"><div class="card mono">Waiting for gateway…</div></div>
+    </section>
+
+    <section class="section">
+      <h2>Gateway Endpoints</h2>
+      <div class="card mono">
+        <div>POST <code>router.paglaai.space/v1/chat/completions</code> · OpenAI-compatible</div>
+        <div>POST <code>router.paglaai.space/v1/messages</code> · Anthropic-compatible</div>
+        <div>GET&nbsp; <code>router.paglaai.space/v1/models</code> · model catalog</div>
+        <div>GET&nbsp; <code>router.paglaai.space/health</code> · liveness + configured accounts</div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Selection Weight</h2>
+      <div class="card mono">
+        <div>W(A<sub>i</sub>,M) = H·S·(α·R<sub>rpm</sub>/L<sub>rpm</sub> + β·R<sub>tpm</sub>/L<sub>tpm</sub> + γ·R<sub>rpd</sub>/L<sub>rpd</sub>) · 1/(1+C)</div>
+        <div style="margin-top:8px">α=0.3 · β=0.4 · γ=0.3 &nbsp;·&nbsp; 429 → quarantine/requeue · 401/403 → H=0 · 5xx → breaker S</div>
+      </div>
+    </section>
+
+    <footer>PaglaROUTER · <span id="updated"></span></footer>
+  </div>
+  <script src="./dashboard.js"></script>
+</body>
+</html>

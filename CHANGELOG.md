@@ -1,0 +1,51 @@
+# Changelog
+
+All notable changes to PaglaROUTER are documented in this file.
+
+The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/).
+
+## [Unreleased]
+
+## [2.5.0] - 2026-08-02
+
+### Added
+- Shared error-classification heuristic (`src/telemetry/error-classify.ts`)
+  mirrored with the PaglaAI onboarding wizard: distinguishes invalid keys,
+  unsupported key types (e.g. deprecated Gemini "standard" keys), permission
+  errors, and upstream failures.
+- `invalid_api_key`, `unsupported_key_type`, and `permission_denied` typed
+  error responses with permanent lockout for 400 invalid-key / unsupported
+  key-type responses.
+- Read-only `*_API_KEYS` ecosystem aliases (claude-code-proxy / uni-api
+  convention) that fall back when the canonical `*_API_KEY` secret is unset.
+- Unified Explorer portal (`public/`) with live gateway + provider telemetry
+  dashboard (Cloudflare Pages).
+
+### Changed
+- 400 with an invalid key / unsupported key type now locks the account out
+  (`H = 0`) instead of retrying a key that can never succeed.
+- Primary key selection in the PaglaAI ecosystem prefers the first key in a
+  comma-separated `*_API_KEY` value.
+
+## [2.0.0] - 2026-07-10
+
+### Added
+- Dual interface: OpenAI-compatible (`/v1/chat/completions`) and
+  Anthropic-compatible (`/v1/messages`) with request/response translation.
+- Weight-based routing engine `W(Ai, M)` (`src/scheduler/weight.ts`) with
+  health factor, circuit breaker, sliding-window quota ratios, and
+  concurrency penalty.
+- KV-backed token-bucket quota tracking (`src/scheduler/sliding-window.ts`)
+  with per-provider rpm / tpm / rpd / tpd windows.
+- Provider matrix: Gemini, Groq, DashScope (Qwen), Moonshot (Kimi),
+  GitHub Models, Cerebras, Mistral, OpenRouter.
+- Multi-account aggregation via comma-separated credentials.
+- Error taxonomy cascade: 429 quarantine/requeue, 401/403 lockout,
+  circuit-breaker on 5xx.
+- Cloudflare Pages explorer portal.
+
+## [1.0.0] - 2026-06-20
+
+### Added
+- Initial Cloudflare Worker gateway with Hono router and the Gemini adapter.

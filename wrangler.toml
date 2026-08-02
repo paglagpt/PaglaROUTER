@@ -1,0 +1,26 @@
+# PaglaROUTER Cloudflare Worker Specification
+name = "paglarouter-gateway"
+main = "src/index.ts"
+compatibility_date = "2026-08-01"
+compatibility_flags = ["nodejs_compat"]
+
+# Custom Domain Route (Targeting paglaai.space)
+routes = [
+  { pattern = "router.paglaai.space/*", zone_name = "paglaai.space" }
+]
+
+# KV Token Bucket Binding for High-Speed Quota Storage
+# NOTE: replace `a1b2c3d4e5f6_pagla_kv` with a real namespace id:
+#   npx wrangler kv namespace create PAGLA_TELEMETRY_KV
+[[kv_namespaces]]
+binding = "PAGLA_TELEMETRY_KV"
+id = "a1b2c3d4e5f6_pagla_kv"
+
+# ============================================================
+# Production environment — `npx wrangler deploy --env production`
+# ============================================================
+[env.production]
+# Custom Domain Route (Targeting paglaai.space)
+routes = [
+  { pattern = "router.paglaai.space/*", zone_name = "paglaai.space" }
+]
