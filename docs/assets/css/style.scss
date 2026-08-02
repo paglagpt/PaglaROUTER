@@ -1,0 +1,39 @@
+---
+---
+
+@import "{{ site.theme }}";
+
+$font-sans: "Open Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
+
+body,
+.markdown-body,
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4,
+.markdown-body h5,
+.markdown-body h6,
+.markdown-body p,
+.markdown-body li,
+.markdown-body table,
+.markdown-body code,
+.site-header,
+.site-title,
+.site-nav {
+  font-family: $font-sans;
+}
+
+.markdown-body a,
+.site-header a {
+  color: #6b7eff;
+}
+.markdown-body a:hover,
+.site-header a:hover {
+  color: #8f9bff;
+}
+
+.markdown-body code,
+.markdown-body pre {
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 13px;
+}
