@@ -45,4 +45,10 @@ the LengtaMLX design system, without touching the production routing flow.
 - `npm test` — 6 files, 59 tests passing
 - `npm run typecheck` — clean under `strict`
 - `npm run build` — dry-run deploy OK (98.59 KiB / gzip 24.39 KiB)
-- `pages-docs.yml` — Jekyll build + deploy to GitHub Pages
+- `pages-docs.yml` — dropped; GitHub Pages builds `docs/` natively from
+  branch `main` at path `/docs` (build_type legacy). The custom workflow path
+  (configure-pages `TypeError`, then `jekyll-github-metadata`
+  `inject_metadata!` for nil in a development-env container) was abandoned in
+  favor of GitHub's own builder, which runs the same gems under production
+  env. Verified: `https://paglagpt.github.io/PaglaROUTER/` returns 200 with
+  all docs pages, stylesheet, and banner assets rendering.
